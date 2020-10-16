@@ -1,7 +1,11 @@
 # FeM Web Security
 
 - Course materials - https://github.com/mike-works/web-security-fundamentals
-- Run local app at http://localhost:3000 - need to update on server
+
+- To run class examples
+
+  - Run local app at http://localhost:8080 - updated in index.js
+  - Modern.ie - setup a VM with IE9 running - not sure this is needed
 
 ## Introduction
 
@@ -11,8 +15,6 @@
   - Web developers have fallen behind backend and devops
   - Attacks are escalating in severity
   - Barriers to staging an attack are lower than ever
-
-- Modern.ie - setup a VM with IE9 running
 
 - Types of hackers
 
@@ -60,4 +62,33 @@
   - If XSS happens, what's your exposure? - Reasons to restrict what can happen through UI and API.
   - In your apps, what could a successful XSS attack escalate to? - Examples include access to data, access to files.
 
-Stopped at Challenge #1 to do config
+- XSS defenses: Never put untrusted data in these places
+  _don't ever trust user data_
+
+  - Directly in a script
+  - In an HTML comment
+  - In an attribute name
+  - In a tag name
+  - Directly in a <style> block
+
+- XSS defenses: Escape data before putting it into HTML
+
+  1. Sanitize data before it is persisted
+  2. Sanitize data before it is presented on the screen
+
+  - Usually want to do both, always holes in sanitation methods
+  - Just about every view library does this automatically (e.g., React, View, Ember, etc.)
+
+- Content Security Policy (CSP) - https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+
+  - For HTTP headers to check for XSS attempts
+  - Can use Helmet.js - https://helmetjs.github.io/ for providing middleware checks for Express and others - for this example, goes into ./server/index.js
+  - Browsers can't tell the difference between scripts downloaded from your origin vs another. It is a single execution context.
+  - CSP allows us to tell modern browsers which sources they should trust, and for what types of resources
+  - This information comes via a HTTP response header or meta tag
+  - Multiple directives are separated by semicolon
+  - Re-defining a directive with the same name has no effect
+  - By default, directives are permissive
+  - _Look at slides for a selection of CSP directives_
+
+-
