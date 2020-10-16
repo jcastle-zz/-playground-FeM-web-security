@@ -1,6 +1,7 @@
 # FeM Web Security
 
 - Course materials - https://github.com/mike-works/web-security-fundamentals
+- Run local app at http://localhost:3000 - need to update on server
 
 ## Introduction
 
