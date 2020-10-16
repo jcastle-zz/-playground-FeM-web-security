@@ -1,0 +1,74 @@
+{
+  "name": "@mike-works/web-security-fundamentals",
+  "version": "0.0.0-development",
+  "private": true,
+  "scripts": {
+    "start": "./node_modules/.bin/nodemon -e js --watch server index.js",
+    "test": "echo 'no tests'",
+    "travis-deploy-once": "travis-deploy-once",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "bcrypt": "3.0.8",
+    "body-parser": "1.19.0",
+    "chalk": "2.4.2",
+    "commander": "2.20.3",
+    "connect-flash": "0.1.1",
+    "connect-sqlite3": "0.9.11",
+    "cookie-parser": "1.4.5",
+    "cookie-session": "2.0.0-rc.1",
+    "cors": "2.8.5",
+    "csurf": "1.11.0",
+    "debug": "4.2.0",
+    "dist-exiftool": "10.53.0",
+    "ejs": "2.7.4",
+    "ejs-mate": "3.0.0",
+    "express": "4.17.1",
+    "express-session": "1.17.1",
+    "faker": "4.1.0",
+    "helmet": "3.23.3",
+    "helmet-csp": "2.10.0",
+    "lodash": "4.17.20",
+    "morgan": "1.10.0",
+    "node-exiftool": "2.3.0",
+    "nodemon": "1.19.4",
+    "sequelize": "5.22.3",
+    "serve-favicon": "2.5.0",
+    "sqlite3": "4.2.0"
+  },
+  "description": "Mike Works Web Security course",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mike-works/web-security-fundamentals.git"
+  },
+  "keywords": [
+    "web-security",
+    "infosec",
+    "xss",
+    "cors",
+    "pentest",
+    "clickjack",
+    "workshop",
+    "javascript"
+  ],
+  "author": "Mike North <michael.l.north@gmail.com> (https://mike.works)",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/mike-works/web-security-fundamentals/issues"
+  },
+  "homepage": "https://github.com/mike-works/web-security-fundamentals#readme",
+  "devDependencies": {
+    "@mike-works/js-lib-renovate-config": "2.0.0",
+    "@mike-works/workshop-semantic-release-config": "1.0.0",
+    "@types/lodash": "4.14.162",
+    "babel-core": "6.26.3",
+    "babel-eslint": "10.1.0",
+    "babel-preset-stage-3": "6.24.1",
+    "semantic-release": "15.14.0",
+    "travis-deploy-once": "5.0.11"
+  },
+  "release": {
+    "extends": "@mike-works/workshop-semantic-release-config"
+  }
+}

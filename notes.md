@@ -1,3 +1,62 @@
 # FeM Web Security
 
-##
+- Course materials - https://github.com/mike-works/web-security-fundamentals
+
+## Introduction
+
+- Problems with frontend development and security
+
+  - Have to consider features and deadlines vs. security
+  - Web developers have fallen behind backend and devops
+  - Attacks are escalating in severity
+  - Barriers to staging an attack are lower than ever
+
+- Modern.ie - setup a VM with IE9 running
+
+- Types of hackers
+
+  - Black hat - Causes damage, hold data for ransom. Driven by personal gain or desire to do as much damage as possible (because they can).
+  - Grey hat - Break into systems but _usually cause no damage_. Mostly driven by curiosity. Sometimes report vulnerabilities they find.
+  - White hat - Break into systems _with permission_ and responsibly disclose anything they find. Make money from bug bounties and consulting as penetration testers.
+
+- Zero day bug - but no one knows about to get a foothold of a system. Begins the race to patch vs try to exploit it.
+
+- Hacker motives
+
+  - Gather information about your system
+  - Research vulnerabilities
+  - Get a foothold in the system
+  - Use that foothold to escalate to more serious attacks
+
+## Cross-Site Scripting (XSS)
+
+- Definition
+
+  - An injection attack - putting content in a place that is designed for text, trick a system to treat as code and execute it
+  - Vulnerabilities are prevalent - difficult to pin down how many sites have this issue but very high, more than 30% of sites are vulnerable to this, some browsers can execute some code some of the time
+  - Allow attacker to read data or perform operations on user's behalf - can result in full system control, simulate admin users, drop tables
+
+- XSS Categories
+
+  - Stored XSS - Code that executes attacker's script is persisted. Adding something to a DB - registering user name with code in it.
+  - Reflected XSS - Transient response from server causes script to execute (i.e., validation error). Can trick temporary response from server like a validation message.
+  - DOM based XSS - No server involvement is required (i.e., pass code in via queryParams). Query param escaping into the DOM.
+  - Blind XSS - Exploits vulnerability in another app (i.e., log reader), the attacker can't see or access under normal means. Sub-category of XSS. Using logging from an external app into an internal app. Vulnerability comes with sucking public data into an internal app. Often need credentials b/c behind firewall.
+
+- XSS Danger Zones
+
+  - User generated rich text (i.e., WYSIWYG) - drop an image tag, start experimenting
+  - Embedded content - drop an iframe, put an object
+  - Anywhere users have control over a URL - older browsers can have javascript: followed by code
+  - Anywhere user input is reflected back (i.e., "couldn't find xyz")
+  - Query parameters rendered into DOM
+  - element.innerHTML = ? - could be arbitrary HTML
+
+- XSS Questions for Web Developers
+
+  - How confident are you in the XSS protection of your OSS libraries? - One thing to look for is a procedure for fixing vulnerability issues, they have an email and team, GH issue should not be the way to report vulnerabilities.
+  - How carefully do people scrutinize browser plugins (i.e., Chrome extensions)? - There is skeptical and there is vigilant. Check for scope of permissions. Use incognito tab for banking and other sensitive browsing and don't let extensions work on incognito tab.
+  - If XSS happens, what's your exposure? - Reasons to restrict what can happen through UI and API.
+  - In your apps, what could a successful XSS attack escalate to? - Examples include access to data, access to files.
+
+Stopped at Challenge #1 to do config
