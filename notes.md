@@ -91,4 +91,19 @@
   - By default, directives are permissive
   - _Look at slides for a selection of CSP directives_
 
--
+- Malicious Attachments
+
+  - Malicious content can be included in attachments
+  - Can add malicious content to images. There is a part of the image that is not seen (e.g., metadata pertaining to the image)
+  - Example in class - used a jpg attachment to insert code onto an HTML page 😩
+
+- Stopping Malicious Attachments
+
+  - Be restrictive on file upload types
+  - Don't trust mime types
+  - Don't trust extensions
+  - More files are accepted, it allows a drop site for users, becomes wasteland of XSS hell
+  - Compress images, it will drop all non-visible data (tool to use Image Magic)
+  - Research attachment types thoroughly - pdfs allow embedded code (e.g., JS)
+
+## Cross-Site Request Forgery (CSRF)
