@@ -242,3 +242,9 @@ Defense:
 - Add domain to https://hstspreload.org
 - HSTS (HTTP Strict Transport Security) - https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
 - Add HSTS headers - Challenge & Solution 10
+
+- Certificate Authority Compromise
+  - Certificate authority - https://en.wikipedia.org/wiki/Certificate_authority
+  - HTTP Public Key Pinning (HPKP) - response header informs browsers of what a public key should look like
+    - More info: https://en.wikipedia.org/wiki/HTTP_Public_Key_Pinning
+  - _Go to great lengths to protect your key_
