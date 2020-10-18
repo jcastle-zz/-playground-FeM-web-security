@@ -227,3 +227,18 @@ Defense:
   - You won't need it all that often
 
 ## HTTPS Downgrade
+
+- What happens with incoming HTTP connections? - typically redirect from HTTP to HTTPS (happens with 301 redirect)
+- More info: https://en.wikipedia.org/wiki/Downgrade_attack
+
+Defense:
+
+- Ask users to save HTTPS
+- Use Content Security Policy (CSP)
+- Google favors HTTPS
+- Install HTTPS://EVERYWHERE
+- There's an HTTP response header - Strict-Transport-Security: max-age=31536000; includeSubDomains
+- Strongly encourage includeSubDomains
+- Add domain to https://hstspreload.org
+- HSTS (HTTP Strict Transport Security) - https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security
+- Add HSTS headers - Challenge & Solution 10
