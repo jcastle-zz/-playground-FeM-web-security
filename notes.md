@@ -9,6 +9,9 @@
 
 ## Introduction
 
+- Client-side security - XSS (e.g., injection - code, SQL), CSRF (e.g., authentication requests), clickjacking (e.g., iFrame duplicates, URI redress attack), third party assets (e.g., dependencies)
+- Server-side security - Man-in-the-Middle, TLS(HTTPS), HTTPS Downgrade
+
 - Problems with frontend development and security
 
   - Have to consider features and deadlines vs. security
@@ -107,3 +110,120 @@
   - Research attachment types thoroughly - pdfs allow embedded code (e.g., JS)
 
 ## Cross-Site Request Forgery (CSRF)
+
+- Takes advantage of the fact that cookies (or Basic Authentication credentials) are passed along with requests
+- One of several good reasons to align with REST conventions
+- You know if you are vulnerable if your server looks to a cookie sent along with the request or basic authentication credentials sent along with the request in order to authenticate or authorize a user. Authenticate = this is who you are, Authorize = do you have the proper privileges.
+
+Three defenses:
+
+1. CSRF Tokens
+
+- Only Basic or cookie authentication schemas are vulnerable
+- Exception: "Client side cookie"
+- Key concept: using cookies doesn't require the ability to read cookies
+- localStorage/sessionStorage - alternatives that don't have this problem - only accessible on client side
+- One way to solve CSRF is to pass a token. These tokens change with each request in an unpredictable way. These tokens are disposable.
+- The token value is not in the cookie that someone can see/use
+- Kind of like 2FA because it provides for authentication and knows the request is from a trusted place/source
+- For server rendered apps: meta tags are fine
+
+2. Request Origin
+
+- Another best practice is to validate the request origin
+- Modern browsers send an Origin header which cannot be altered by client-side code, with each request (IE11 does not in some cases)
+- In cases where there is no Origin header, there's almost always a Referer header
+- When behind a proxy, you can usually get some information from Host and X-Forwarded-Host headers
+
+3. Cross-Origin Resource Sharing (CORS)
+
+- This is what permits browsers to send a request from one domain to another
+- A preflight OPTIONS request gives server a chance to indicated what's allowed, main request follows
+
+## Clickjacking
+
+- Trick the user into performing an action they don't see
+- Usually occurs through an elaborate positioning of iframes
+- These are UI redress attacks
+- Can be used to capture keystrokes, really refined clickjacks create illusion that user is clicking on what they want, or typing where they want
+- Comprimising the user and not the system
+
+- Stopping Clickjacking
+
+  - X-Frame-Options - DENY, SAMEORIGIN, ALLOW-FROM [url]
+  - Chrome/Safari don't respect allow-from. Use frame-ancestors CSP directive instead
+  - This applies to the TOP LEVEL frame
+  - Slides include <style id="clickjack">
+
+## Third Party Assets
+
+Three types of third party assets:
+
+1. Pulling in resource someone else is hosting like with a CDN
+2. Using a version dependency (e.g., NPM), pulling down source code from some repository - package-lock.json and yarn-lock support keeping dependencies set for the build
+3. The worst type, inserting scripts or HTML into application
+
+All are third party because we didn't write the code, we probably didn't thoroughly review the code, and we are not hosting the code.
+
+Issues with third party assets:
+
+- The people who write your dependencies make mistakes
+- Recommendations:
+
+  1. Reproducible builds, with a lockfile
+  2. Use LTS (Long Term Support aka stable) versions where you care less about bleeding edge features
+  3. Support _bug bounties_ in important OSS projects
+  4. Run tests that assert only expected requests are sent out (e.g., in acceptance tests)
+
+- For situations where using vendor tags (i.e., with Google Analytics):
+
+  - These can be updated independently of deployments
+  - Definitely avoid adding scripts that add more scripts
+  - When "fail secure" is desired, add your own SRI (Subresource Integrity Fallback) to the script tags - for reference: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+  - Ask that your vendors VERSION scripts, so there is control when new code lands (and the SRI doesn't break)
+
+## Man-in-the-Middle
+
+- Definition: cyber attack where the attacker secretly relays and possible alters the communications between two parties - https://en.wikipedia.org/wiki/Man-in-the-middle_attack
+  - Hacker can eavesdrop and tamper with communication between sender and server
+  - XSS at will
+  - Capture user credentials and be malicious - try credentials on other sites
+- DNS (Domain Name Service) - translates hostname into IP address
+
+Defense:
+
+- Encrypt data in-flight with HTTPS
+  - Use TLS (Transport Layer Security)
+  - Use a secret key to read or alter request/response
+  - Certificates identify domains and require domain validation
+  - Enhance validation often requires government ID but that's just issuer policy
+
+* Any certificate with matched domain name will work for HTTPS so anyone with cert can get HTTPS connection to the domain
+
+## HTTPS
+
+- 56% of web uses HTTPS (might be more now, rest using HTTP)
+- Definition from Wikipedia: The principal motivations for HTTPS are authentication of the accessed website, and protection of the privacy and integrity of the exchanged data while in transit. It protects against man-in-the-middle attacks, and the bidirectional encryption of communications between a client and server protects the communications against eavesdropping and tampering. In practice, this provides a reasonable assurance that one is communicating with the intended website without interference from attackers.
+- Definition URL on web: https://en.wikipedia.org/wiki/HTTPS#:~:text=Hypertext%20Transfer%20Protocol%20Secure%20(HTTPS,Hypertext%20Transfer%20Protocol%20(HTTP).&text=In%20HTTPS%2C%20the%20communication%20protocol,TLS%2C%20or%20HTTP%20over%20SSL
+
+- HTTPS: Cryptography
+
+  - Two types of encryption involved: Symmetric encryption and Public Key encryption (i.e., public for writing & private key for reading) - popular algorithm is RSA
+  - Symmetric is faster, has no practical limit on size of content
+  - Keys generated on per connection basis
+  - One catch is the safety of the key
+
+- TLS Handshake
+
+  - Passing of certificates and session key
+  - Allows for encrypted communication
+  - Public and private keys are just for the key exchange, all other stuff (i.e., to transfer as in content, data) done by symmetric encryption because it's much faster
+
+- OpenSSL
+
+  - Industry standard library for crypto
+  - Don't implement your own algorithm, handshake, protocol, etc. - there are scripts for this in the slides, but wouldn't want to go this route
+  - OpenSSL is not user friendly
+  - You won't need it all that often
+
+## HTTPS Downgrade
